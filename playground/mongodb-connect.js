@@ -18,7 +18,7 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', function (err, client) 
     const db = client.db('TodoApp');
 
     db.collection('TodoApp').insertOne({
-       text: "Somethings to do",
+       text: "Eat lunch",
        completed: true
     }, function (err, result) {
         if (err) {
