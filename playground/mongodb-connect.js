@@ -18,7 +18,8 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', function (err, client) 
     const db = client.db('TodoApp');
 
     db.collection('TodoApp').insertOne({
-       text: "Eat lunch",
+       name: "Alex",
+        age: 25,
        completed: true
     }, function (err, result) {
         if (err) {
