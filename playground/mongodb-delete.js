@@ -28,8 +28,14 @@ MongoClient.connect('mongodb://localhost:27017/TodoApp', function (err, client) 
        console.log(result);
     });*/
 
-    db.collection('TodoApp').findOneAndDelete({completed: false}).then( function(result) {
+/*    db.collection('TodoApp').findOneAndDelete({completed: false}).then( function(result) {
         console.log(result);
+    });*/
+
+    // db.collection('TodoApp').deleteMany({text: 'Somethings to do'});
+
+    db.collection('TodoApp').findOneAndDelete({_id: new ObjectID("5ae0e87def011a2a607b632a")}).then( function(result) {
+       console.log(JSON.stringify(result, undefined, 2));
     });
 
 
