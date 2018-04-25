@@ -52,7 +52,7 @@ describe('POST /todos', function () {
                    done();
                }).catch(function (e) {
                    done(e);
-               })
-           })
-   })
+               });
+           });
+   });
 });
