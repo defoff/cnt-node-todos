@@ -8,8 +8,8 @@ var UserSchema = new mongoose.Schema({
     email: {
         type: String,
         required: true,
-        minlength: 1,
         trim: true,
+        minlength: 1,
         unique: true,
         validate: {
             validator: validator.isEmail,
@@ -33,28 +33,23 @@ var UserSchema = new mongoose.Schema({
     }]
 });
 
-UserSchema.methods.toJSON = function() {
-  var user = this;
-  var userObject = user.toObject();
+UserSchema.methods.toJSON = function () {
+    var user = this;
+    var userObject = user.toObject();
 
-  return _.pick(userObject, ['_id', 'email']);
+    return _.pick(userObject, ['_id', 'email']);
 };
 
-
-
 UserSchema.methods.generateAuthToken = function () {
-  var user = this;
-  var access = 'auth';
-  var token = jwt.sign({_id: user._id.toHexString(), access: access}, 'abc123').toString();
+    var user = this;
+    var access = 'auth';
+    var token = jwt.sign({_id: user._id.toHexString(), access}, 'abc123').toString();
 
-  user.tokens = user.tokens.concat([{
-      access: access,
-      token: token
-  }]);
+    user.tokens.push({access, token});
 
-  return user.save().then(function () {
-      return token;
-  });
+    return user.save().then(() => {
+        return token;
+    });
 };
 
 UserSchema.statics.findByToken = function (token) {
@@ -76,10 +71,10 @@ UserSchema.statics.findByToken = function (token) {
 
 UserSchema.pre('save', function (next) {
     var user = this;
+
     if (user.isModified('password')) {
-       var pw = user.password;
-        bcrypt.genSalt(10, function (err, salt) {
-            bcrypt.hash(pw, salt, function (err, hash) {
+        bcrypt.genSalt(10, (err, salt) => {
+            bcrypt.hash(user.password, salt, (err, hash) => {
                 user.password = hash;
                 next();
             });
@@ -91,6 +86,4 @@ UserSchema.pre('save', function (next) {
 
 var User = mongoose.model('User', UserSchema);
 
-module.exports = {
-    User: User
-};
+module.exports = {User}
